@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if ! command -v docker &> /dev/null; then
+    echo "Docker is not installed. Please install Docker first."
+    exit 1
+fi
+
+if ! docker info &> /dev/null; then
+    echo "Docker daemon is not running. Please start the Docker daemon."
+    exit 1
+fi
+
+if ! docker ps &> /dev/null; then
+    echo "You don't have access to the Docker daemon without sudo."
+    echo "Please add your user to the 'docker' group or run this script with sudo."
+    exit 1
+fi
+
+echo "Building Docker image..."
+docker build -t lua-gpg .
+
+echo "Running Docker container..."
+docker run -it --rm lua-gpg
+
